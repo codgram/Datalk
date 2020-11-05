@@ -1,0 +1,55 @@
+@page "/chatroom/create"
+@inject HttpClient http
+using Microsoft.AspNetCore.Components.Authorization;
+@inject NavigationManager uriHelper
+
+<h3>Create</h3>
+
+<Form ButtonText="Create Chatroom" chatroom="@chatroom" OnValidSubmit="@CreateChatroom" />
+
+@code {
+    Chatroom chatroom = new Chatroom();
+
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
+
+    private string username;
+
+    private string userId;
+
+    private DatalkUser user;
+    public class DatalkUser
+    {
+        public string Id { get; set; }
+        public string UserName { get; set; }
+    }
+
+    async Task CreateChatroom()
+    {
+        //chatroom.UniqueName = chatroom.Name.Replace(" ", "-");
+        chatroom.DatalkUserId = await GetUserId();
+        await http.PostAsJsonAsync("api/chatroom", chatroom);
+        uriHelper.NavigateTo("chatroom");
+    }
+
+    private async Task<string> GetUserName()
+        {
+            var authState = await authenticationStateTask;
+            var user = authState.User;
+
+            if (user.Identity.IsAuthenticated)
+            {
+                username = user.Identity.Name;
+            }
+            return username;
+
+        }
+
+        private async Task<string> GetUserId()
+        {
+            string api = "api/user/" + await GetUserName();
+            user = await http.GetFromJsonAsync<DatalkUser>(api);
+            userId = user.Id;
+            return userId;
+        }
+}
