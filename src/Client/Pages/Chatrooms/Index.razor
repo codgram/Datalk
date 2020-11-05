@@ -1,0 +1,66 @@
+@page "/chatroom"
+@inject HttpClient client
+@inject IJSRuntime js
+
+<h3>Chatrooms</h3>
+<small>Add as many chatrooms as you wish.</small>
+<div class="form-group">
+    <a class="btn btn-success" href="chatroom/create"><i class="oi oi-plus"></i> Create New</a>
+</div>
+<br>
+
+@if (chatrooms == null)
+{
+    <text>Loading...</text>
+}
+else if (chatrooms.Length == 0)
+{
+    <text>No Records Found.</text>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Experience (Years)</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Chatroom room in chatrooms)
+            {
+                <tr>
+                    <td>@room.ChatroomId</td>
+                    <td>@room.Name</td>
+                    <td>@room.Description</td>
+                    <td>
+                        <a class="btn btn-success" href="chatroom/edit/@room.ChatroomId">Edit</a>
+                        <button class="btn btn-danger" @onclick="@(() => Delete(room.ChatroomId))">Delete</button>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+}
+@code {
+    Chatroom[] chatrooms { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        chatrooms = await client.GetFromJsonAsync<Chatroom[]>("api/chatroom");
+    }
+
+    async Task Delete(string chatroomId)
+    {
+        var chatroom = chatrooms.First(x => x.ChatroomId == chatroomId);
+        if (await js.InvokeAsync<bool>("confirm", $"Do you want to delete {chatroom.Name}'s ({chatroom.ChatroomId}) Record?"))
+        {
+            await client.DeleteAsync($"api/chatroom/{chatroomId}");
+            await OnInitializedAsync();
+        }
+    }
+}

@@ -1,0 +1,27 @@
+@page "/chatroom/edit/{chatroomId}"
+@inject HttpClient http
+@inject NavigationManager uriHelper
+@inject IJSRuntime js
+
+<h3>Edit</h3>
+
+<Form ButtonText="Update" dev="dev"
+      OnValidSubmit="@EditDeveloper" />
+
+@code {
+    [Parameter] public string chatroomId { get; set; }
+    Chatroom dev = new Chatroom();
+
+    protected async override Task OnParametersSetAsync()
+    {
+        dev = await http.GetFromJsonAsync<Chatroom>($"api/chatroom/{chatroomId}");
+    }
+
+    async Task EditDeveloper()
+    {
+        await http.PutAsJsonAsync("api/chatroom", dev);
+        await js.InvokeVoidAsync("alert", $"Updated Successfully!");
+        uriHelper.NavigateTo("chatroom");
+
+    }
+}

@@ -1,0 +1,71 @@
+@page "/room"
+@page "/room/{Id}"
+@layout ChatroomLayout
+@using Microsoft.AspNetCore.SignalR.Client
+@inject NavigationManager NavigationManager
+@implements IDisposable
+@inject HttpClient Http
+@inject IJSRuntime js
+
+
+
+@if(chatroom == null) {
+    <div class="alert alert-primary shadow p-3 rounded mt-3" role="alert">
+        @Id
+    </div>
+}
+else {
+    <div class="alert alert-primary shadow p-3 rounded mt-3" role="alert">
+        @chatroom.Name
+    </div>
+}
+
+
+
+
+<div id="messagesList" class=" messagesList mb-5">
+
+    @if(dbMessages == null) {
+
+        <p>Start typing!</p>
+    }
+
+    else {
+
+        @foreach(var dbmessage in dbMessages.Where(m => m.ChatroomId == Id)) {
+
+            <div class="alert alert-light shadow p-3 bg-white rounded" role="alert">
+                @dbmessage.UserName : @dbmessage.Content
+            </div>
+
+        }
+
+    }
+    
+    @foreach (var message in messages)
+    {
+        <div class="alert alert-light shadow p-3 bg-white rounded" role="alert">
+            @message
+        </div>
+    }
+</div>
+
+<hr>
+
+
+
+
+
+
+<footer class="footer mt-auto py-3 bg-light">
+    <div class="container">
+        
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Type your message" aria-label="Type your message" aria-describedby="button-addon2" @bind="messageInput" size="50" />
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button" id="button-addon2" @onclick="Send" disabled="@(!IsConnected)">Send</button>
+            </div>
+        </div>
+
+    </div>
+</footer>
