@@ -1,7 +1,32 @@
-@page "/chat"
+@page "/room"
 @layout ChatroomLayout
 @using Microsoft.AspNetCore.Authorization
 @attribute [Authorize]
-@inject HttpClient Http
+@inject HttpClient client
 
-<h1>Choose a chatroom</h1>
+<h1 class="my-3">Choose a Room</h1>
+
+
+@if(chatrooms == null) {
+  <p>Loading...</p>
+}
+else {
+
+
+  @foreach(var room in chatrooms) {
+    string roomLink = "room/" + room.ChatroomId;
+    <ChatCard name=@room.Name description=@room.Description link=@roomLink />
+  }
+
+}
+
+@code {
+  private Chatroom[] chatrooms { get; set; }
+
+  
+  protected override async Task OnInitializedAsync()
+  {
+    chatrooms = await client.GetFromJsonAsync<Chatroom[]>("api/chatroom");
+    chatrooms = chatrooms.OrderBy(c => c.CreatedOn).ToArray();
+  }
+}
