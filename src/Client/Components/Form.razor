@@ -1,20 +1,38 @@
 <EditForm Model="@chatroom" OnValidSubmit="@OnValidSubmit">
     <DataAnnotationsValidator />
+
+
     <div class="form-group">
-        <label>First Name :</label>
-        <div>
-            <InputText @bind-Value="@chatroom.Name" />
-            <ValidationMessage For="@(() => chatroom.Name)" />
-        </div>
+
+        <label class="@classFocusText mdc-text-field mdc-text-field--outlined mdc-text-field " >
+            <span class="mdc-notched-outline mdc-notched-outline--upgraded @classnotchLabel">
+                <span class="mdc-notched-outline__leading"></span>
+                <span class="mdc-notched-outline__notch @classChangeWidth">
+                    <span class="mdc-floating-label @classFloatLabel" id="my-label-id">Name</span>
+                </span>
+                <span class="mdc-notched-outline__trailing"></span>
+            </span>
+            <InputText type="text" class="mdc-text-field__input" aria-labelledby="my-label-id" @bind-Value="@chatroom.Name" @onclick="FocusName"/>
+            @* <ValidationMessage For="@(() => chatroom.Name)" /> *@
+        </label>
     </div>
+
+
     <div class="form-group ">
-        <div>
-            <label>Last Name :</label>
-            <div>
-                <InputText @bind-Value="@chatroom.Description" />
-                <ValidationMessage For="@(() => chatroom.Description)" />
-            </div>
-        </div>
+
+        <label class="@classFocusText mdc-text-field mdc-text-field--outlined mdc-text-field " >
+            <span class="mdc-notched-outline mdc-notched-outline--upgraded @classnotchLabel">
+                <span class="mdc-notched-outline__leading"></span>
+                <span class="mdc-notched-outline__notch @classChangeWidth">
+                    <span class="mdc-floating-label @classFloatLabel" id="my-label-id">Description</span>
+                </span>
+                <span class="mdc-notched-outline__trailing"></span>
+            </span>
+            <InputText type="text" class="mdc-text-field__input" aria-labelledby="my-label-id" @bind-Value="@chatroom.Description" @onclick="FocusDescription"/>
+            @* <ValidationMessage For="@(() => chatroom.Name)" /> *@
+        </label>
+
+
     </div>
 
     <button type="submit" class="btn btn-success">
@@ -28,4 +46,74 @@
     [Parameter] public Chatroom chatroom { get; set; }
     [Parameter] public string ButtonText { get; set; } = "Save";
     [Parameter] public EventCallback OnValidSubmit { get; set; }
+
+
+    private bool nameIsClicked = false;
+    private bool descriptionIsCliked = false;
+    private string className => nameIsClicked ? "name" : "";
+    private string classDescription => descriptionIsCliked ? "description" : "";
+
+    private bool focusText = false;
+    private bool notchLabel = false;
+    private bool changeWidth = false;
+    private bool floatLabel = false;
+
+    private string classFocusText => focusText ? "mdc-text-field--focused": null;
+    private string classnotchLabel => notchLabel ? "mdc-notched-outline--notched" : null;
+    private string classFloatLabel => floatLabel ? "mdc-floating-label--float-above" : null;
+    private string classChangeWidth => changeWidth ? "notch-width" : null;
+
+    private void FocusName() {
+        nameIsClicked = !nameIsClicked;
+        descriptionIsCliked = !descriptionIsCliked;
+
+        //Change description field style
+        if(descriptionIsCliked) {
+            focusText = !focusText;
+            notchLabel = !notchLabel;
+            changeWidth = !changeWidth;
+            floatLabel = !floatLabel;
+        }
+
+
+        if(!focusText)
+            focusText = !focusText;
+        
+        if(!notchLabel)
+            notchLabel = !notchLabel;
+        
+        if(!changeWidth)
+            changeWidth = !changeWidth;
+
+        if(!floatLabel)
+            floatLabel = !floatLabel;
+    }
+
+    private void FocusDescription() {
+
+        descriptionIsCliked = !descriptionIsCliked;
+        nameIsClicked = !nameIsClicked;
+        
+
+        //Change description field style
+        if(nameIsClicked) {
+            focusText = !focusText;
+            notchLabel = !notchLabel;
+            changeWidth = !changeWidth;
+            floatLabel = !floatLabel;
+        }
+
+
+        @* if(!focusText)
+            focusText = !focusText;
+        
+        if(!notchLabel)
+            notchLabel = !notchLabel;
+        
+        if(!changeWidth)
+            changeWidth = !changeWidth;
+
+        if(!floatLabel)
+            floatLabel = !floatLabel; *@
+    }
 }

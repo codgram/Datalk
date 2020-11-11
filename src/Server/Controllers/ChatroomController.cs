@@ -25,7 +25,7 @@ namespace Datalk.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Chatroom>>> GetChatroom()
         {
-            return await _context.Chatroom.ToListAsync();
+            return await _context.Chatroom.OrderBy(c => c.CreatedOn).ToListAsync();
         }
 
         // GET: api/Chatroom/5
