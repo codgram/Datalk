@@ -7,11 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Datalk.Server.Data;
 using Datalk.Shared.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Datalk.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ChatroomMemberController : ControllerBase
     {
         private readonly DatalkContext _context;

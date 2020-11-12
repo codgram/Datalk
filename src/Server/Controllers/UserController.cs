@@ -8,11 +8,13 @@ using Microsoft.EntityFrameworkCore;
 using Datalk.Server.Data;
 using Datalk.Shared.Models;
 using Datalk.Server.Areas.Identity.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Datalk.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly DatalkContext _context;
