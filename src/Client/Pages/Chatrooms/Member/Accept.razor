@@ -1,0 +1,46 @@
+@page "/room/{chatroomId}/accept"
+@inject HttpClient client
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+@inject NavigationManager NavigationManager
+
+<p>Hello</p>
+
+
+
+@code {
+    [Parameter]
+    public string chatroomId { get; set; }
+
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
+
+    private string username;
+
+    private ChatroomMember chatroomMember;
+    protected override async Task OnInitializedAsync() {
+        await GetUserName();
+        var user = await client.GetFromJsonAsync<DatalkUser>($"api/user/{username}");
+        
+        chatroomMember = new ChatroomMember() {
+            ChatroomId = chatroomId,
+            DatalkUserId = user.Id,
+            Type = ChatroomMemberType.Member,
+
+        };
+
+        await client.PostAsJsonAsync("api/chatroommember/", chatroomMember);
+        NavigationManager.NavigateTo($"room/{chatroomId}");
+    }
+
+    private async Task<string> GetUserName()
+    {
+        var authState = await authenticationStateTask;
+        var user = authState.User;
+        if (user.Identity.IsAuthenticated)
+        {
+            username = user.Identity.Name;
+        }
+        return username;
+    }
+}

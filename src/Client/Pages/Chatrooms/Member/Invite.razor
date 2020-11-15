@@ -1,0 +1,63 @@
+@page "/room/{chatroomId}/invite"
+@inject HttpClient client
+@inject NavigationManager NavigationManager
+
+
+<h4 class="mdc-typography--headline4">Invite a new member</h4>
+
+<div class="mdc-text-field mdc-text-field--outlined @classFocusText">
+  <input class="mdc-text-field__input" id="text-field-hero-input" @bind="@member" @bind:event="oninput">
+  <div class="mdc-notched-outline mdc-notched-outline--upgraded @classnotchLabel">
+    <div class="mdc-notched-outline__leading"></div>
+    <div class="mdc-notched-outline__notch @classChangeWidth">
+      <label for="text-field-hero-input " class="mdc-floating-label @classFloatLabel">Email or Username</label>
+    </div>
+    <div class="mdc-notched-outline__trailing"></div>
+  </div>
+</div>
+
+
+<button class="mdc-button mdc-button--outlined" @onclick="InviteMember">  
+        <span class="mdc-button__ripple"></span> 
+        Invite
+</button>
+
+@code {
+
+    [Parameter]
+    public string chatroomId { get; set; }
+
+    public Chatroom chatroom;
+    public ChatroomMember chatroomMember;
+    private string member { get; set; }
+
+
+    private bool nameIsClicked = false;
+    private string className => nameIsClicked ? "name" : "";
+
+    private bool focusText = false;
+    private bool notchLabel = false;
+    private bool changeWidth = false;
+    private bool floatLabel = false;
+
+    private string classFocusText => member == "" || member == null ? null : "mdc-text-field--focused";
+    private string classnotchLabel => member == "" || member == null ? null : "mdc-notched-outline--notched";
+    private string classFloatLabel => member == "" || member == null ? null : "mdc-floating-label--float-above";
+    private string classChangeWidth => member == "" || member == null ? null : "notch-width";
+
+
+    public async Task InviteMember() {
+
+      chatroomMember = new ChatroomMember() {
+        ChatroomId = chatroomId,
+        Type = ChatroomMemberType.Member,
+      };
+
+      
+      chatroom = await client.GetFromJsonAsync<Chatroom>($"api/chatroom/{chatroomId}");
+      await client.GetFromJsonAsync<Chatroom>($"api/ChatroomMember/{chatroomId}/invite/{member}");
+      NavigationManager.NavigateTo($"room/{chatroomId}");
+    }
+
+
+}
