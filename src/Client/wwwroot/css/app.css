@@ -230,3 +230,68 @@ footer{
 .mdc-card-wrapper__text-section:first-child, .mdc-card__media + .mdc-card-wrapper__text-section {
     padding-top: 16px;
 }
+
+
+
+
+
+
+.optional-header {
+    min-height: 40px;
+    padding: 16px;
+    position: relative;
+}
+.optional-header .action-icons {
+    float: right;
+    position: relative;
+    right: -8px;
+    top: 2px;
+}
+.optional-header .primary-title {
+    bottom: auto;
+    display: inline-block;
+    padding: 0;
+    position: absolute;
+    top: 50%;
+    -moz-transform: translate(0, -50%);
+    -ms-transform: translate(0, -50%);
+    -o-transform: translate(0, -50%);
+    -webkit-transform: translate(0, -50%);
+    transform: translate(0, -50%);
+}
+
+.primary-title {
+    padding: 24px 16px 16px;
+}
+
+.thumbnail {
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+    float: left;
+    height: 40px;
+    /*position: relative;*/
+    width: 40px;
+    margin-right: 5px;
+}
+.thumbnail img {
+    background-color: #fff;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    -moz-transform: translate(0, -50%);
+    -ms-transform: translate(0, -50%);
+    -o-transform: translate(0, -50%);
+    -webkit-transform: translate(0, -50%);
+    transform: translate(0, -50%);
+}
+
+.thumbnail--40x40 {
+    margin-right: 16px;
+}
+.thumbnail--40x40 img {
+    height: 40px;
+    width: 40px;
+}
