@@ -1,0 +1,68 @@
+@page "/room/{chatroomId}/members"
+@inject HttpClient client
+
+
+
+@if(chatroom != null) {
+    <div class="mt-3">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><a href="room">Chatrooms</a></li>
+        <li class="breadcrumb-item"><a href="room/@chatroom.ChatroomId">@chatroom.Name</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Members</li>
+      </ol>
+    </nav>
+    </div>
+}
+
+@if(chatroomMembers != null) {
+    foreach(var member in chatroomMembers) {
+        var user = users.FirstOrDefault(u => u.Id == member.DatalkUserId);
+         <MemberCard FullName="@user.UserName" JoinedDate="@member.CreatedOn.ToString()"/> 
+         @* <p>Chatroom: @member.ChatroomMemberId | @user.Id</p> *@
+    }
+}
+else {
+    <p>Loading ...</p>
+}
+
+
+
+
+@code {
+
+    [Parameter]
+    public string chatroomId { get; set; }
+
+    private Chatroom chatroom;
+    private ChatroomMember[] chatroomMembers;
+    
+    private DatalkUser[] users;
+
+    public class DatalkUser
+    {
+        public string Id { get; set; }
+        public string UserName { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string FullName { get {
+            return FirstName + " " + LastName;
+        }}
+    }
+
+    protected override async Task OnInitializedAsync() {
+
+        chatroom = await client.GetFromJsonAsync<Chatroom>($"api/chatroom/{chatroomId}");
+
+        chatroomMembers = await client.GetFromJsonAsync<ChatroomMember[]>($"/api/chatroommember/{chatroomId}/members");
+
+        users = await client.GetFromJsonAsync<DatalkUser[]>("api/user");
+
+        
+
+        
+        
+    }
+
+}
