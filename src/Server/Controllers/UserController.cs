@@ -26,14 +26,14 @@ namespace Datalk.Server.Controllers
 
         // GET: api/User
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<DatalkUser>>> GetChatroom()
+        public async Task<ActionResult<IEnumerable<Areas.Identity.Data.DatalkUser>>> GetUser()
         {
             return await _context.DatalkUser.ToListAsync();
         }
 
         // GET: api/user/username
         [HttpGet("{username}")]
-        public async Task<ActionResult<DatalkUser>> GetUser(string username)
+        public async Task<ActionResult<Areas.Identity.Data.DatalkUser>> GetUser(string username)
         {
             var user = await _context.DatalkUser.FirstOrDefaultAsync(c => c.UserName == username);
 
@@ -44,6 +44,36 @@ namespace Datalk.Server.Controllers
 
             return user;
         }
+
+        // GET: api/user/email={email}
+        [HttpGet("email={email}")]
+        public async Task<ActionResult<Areas.Identity.Data.DatalkUser>> GetUserByEmail(string email)
+        {
+            var user = await _context.DatalkUser.FirstOrDefaultAsync(c => c.Email == email);
+
+            if (user== null)
+            {
+                return NotFound();
+            }
+
+            return user;
+        }
+
+
+        // GET: api/user/email={email}
+        [HttpGet("id={Id}")]
+        public async Task<ActionResult<Areas.Identity.Data.DatalkUser>> GetUserById(string Id)
+        {
+            var user = await _context.DatalkUser.FirstOrDefaultAsync(c => c.Id == Id);
+
+            if (user== null)
+            {
+                return NotFound();
+            }
+
+            return user;
+        }
+        
 
         private bool UserExists(string id)
         {
