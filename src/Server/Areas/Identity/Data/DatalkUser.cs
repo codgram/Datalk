@@ -11,5 +11,10 @@ namespace Datalk.Server.Areas.Identity.Data
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
+
+        public string FullName { get {
+                return FirstName + " " + LastName;
+            }
+        }
     }
 }
