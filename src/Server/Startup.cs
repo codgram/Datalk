@@ -16,6 +16,8 @@ using Datalk.Server.Services;
 using Datalk.Server.Hubs;
 using Datalk.Server.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using System.Security.Claims;
+
 
 namespace Datalk.Server
 {
@@ -54,6 +56,10 @@ namespace Datalk.Server
                 options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
                     new[] { "application/octet-stream" });
             });
+
+            // This is used to get user claims in the API
+            services.Configure<IdentityOptions>(options => 
+                    options.ClaimsIdentity.UserIdClaimType = ClaimTypes.NameIdentifier);
 
             
             services.AddTransient<IEmailSender, EmailSender>();
