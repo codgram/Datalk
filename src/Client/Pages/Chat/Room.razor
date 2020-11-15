@@ -25,7 +25,13 @@ else {
     </div>
 }
 
-
+@{string link = "room/"+ Id + "/invite";}
+<NavLink href="@link">
+    <button class="mdc-button mdc-button--outlined mb-4">  
+        <span class="mdc-button__ripple"></span> 
+        Invite
+    </button>
+</NavLink>
 
 
 <div id="messagesList" class=" messagesList mb-5">
