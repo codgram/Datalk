@@ -7,10 +7,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Datalk.Server.Data;
 using Datalk.Shared.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Datalk.Server.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class MessageController : ControllerBase
     {
