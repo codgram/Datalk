@@ -22,7 +22,7 @@ namespace Datalk.Server.Services
 
         public Task Execute(string apiKey, string subject, string message, string email)
         {
-            apiKey = "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";
+            apiKey = "{YOUR_API_KEY}";
             var client = new SendGridClient(apiKey);
             
             var msg = new SendGridMessage()
