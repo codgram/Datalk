@@ -32,4 +32,4 @@ jobs:
         app-name: 'Datalk'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_1d83f9c46bb549198d76ce236b60f71f }}
-        package: ${{env.DOTNET_ROOT}}/Datalk
+        package: ${{env.DOTNET_ROOT}}/myapp
