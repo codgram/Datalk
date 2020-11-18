@@ -21,10 +21,10 @@ jobs:
         dotnet-version: '3.1.301'
 
     - name: Build with dotnet
-      run: dotnet build src/Server/Datalk.csproj --configuration Release
+      run: dotnet build src/Server/Datalk.Server.csproj --configuration Release
 
     - name: dotnet publish
-      run: dotnet publish src/Server/Datalk.csproj -c Release -o ${{env.DOTNET_ROOT}}/myapp
+      run: dotnet publish src/Server/Datalk.Server.csproj -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
