@@ -21,7 +21,7 @@ jobs:
         dotnet-version: '3.1.301'
 
     - name: Build with dotnet
-      run: dotnet build --configuration Release
+      run: dotnet build --configuration Release -o ${{env.DOTNET_ROOT}}/src/Server
 
     - name: dotnet publish
       run: dotnet publish -c Release
@@ -32,4 +32,4 @@ jobs:
         app-name: 'Datalk'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_1d83f9c46bb549198d76ce236b60f71f }}
-        package: ${{env.DOTNET_ROOT}}/myapp 
+        package: ${{env.DOTNET_ROOT}}/src/Server 
